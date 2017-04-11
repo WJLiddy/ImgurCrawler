@@ -5,8 +5,8 @@ require 'watir-scroll'
 # Simulate a browser with javascript support
 browser = Watir::Browser.new(:phantomjs)
 
-# Start with the most popular image on imgur as the first comment section to crawl
-queue = ["zzdj9VS"]
+# Start with the most popular images on imgur as the first comment section to crawl
+queue = ["zzdj9VS","mNiso","PmXqPEy","RLKixQW","9zUk0Pb"]
 
 # Hash of images and timestamps
 discovered_imgs = {}
@@ -29,8 +29,11 @@ while queue.length != 0 && (discovered_imgs.keys.length < limit)
     discovered_imgs[seed_url] = Time.now.to_f - time_start
   end
 
-  browser.goto("imgur.com/gallery/" + seed_url)
-
+  begin
+    browser.goto("imgur.com/gallery/" + seed_url)
+  rescue => e
+    puts e
+  end
   # Update the comment count until we can load no more.
   last_loaded = nil
 
